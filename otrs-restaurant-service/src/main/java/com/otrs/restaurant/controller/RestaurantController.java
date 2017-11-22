@@ -30,8 +30,7 @@ public class RestaurantController {
 	
 	@PostMapping(path="/")
 	public @ResponseBody String addNewRestaurant (@Valid @RequestBody Restaurant restaurant) {
-		boolean saved = restaurantService.saveRestaurant(restaurant);
-		return saved? "Save Success" : "Possible duplicate entry";
+		return restaurantService.saveRestaurant(restaurant);
 	}
 
 	@GetMapping(path="/")

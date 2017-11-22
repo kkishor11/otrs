@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.otrs.restaurant.model.Restaurant;
 import com.otrs.restaurant.repository.RestaurantRepository;
 import com.otrs.restaurant.service.RestaurantService;
+import com.otrs.restaurant.utils.SaveStatus;
 
 /**
  * @author Kundan
@@ -31,16 +32,17 @@ public class RestaurantServiceImpl implements RestaurantService {
 	 * @see com.otrs.restaurant.service.RestaurantService#saveRestaurant(com.otrs.restaurant.model.Restaurant)
 	 */
 	@Override
-	public boolean saveRestaurant(Restaurant restaurant) {
+	public String saveRestaurant(Restaurant restaurant) {
 		try {
 			restaurantRepository.save(restaurant);
 		} catch(Exception e) {
 			if (e instanceof DataIntegrityViolationException) {
 				logger.error(e.getMessage());
-				return false;
+				return SaveStatus.DUPLICATE.statusText();
 			}
+			return SaveStatus.FAILED.statusText();
 		}
-		return true;
+		return SaveStatus.SUCCESS.statusText();
 	}
 
 	/* (non-Javadoc)

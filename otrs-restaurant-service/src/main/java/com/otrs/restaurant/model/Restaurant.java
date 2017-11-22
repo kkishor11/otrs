@@ -3,12 +3,13 @@
  */
 package com.otrs.restaurant.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 /**
  * @author S714272
@@ -16,8 +17,9 @@ import javax.persistence.UniqueConstraint;
  */
 
 @Entity
-@Table(uniqueConstraints={@UniqueConstraint(columnNames = {"name" , "city"})})
-public class Restaurant {
+public class Restaurant implements Serializable{
+
+	private static final long serialVersionUID = -1380637404858800893L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

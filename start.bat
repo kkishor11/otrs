@@ -1,0 +1,1 @@
+start cmd /k cd C:\Users\S714272\Downloads\SpringBoot201\projects\otrs-restaurant-service && h:\kk.bat && mvn spring-boot:run
