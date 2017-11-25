@@ -13,10 +13,12 @@ create table restaurant(
 	constraint uc_name_city unique (name,city)
 );
 
-create table user(
-	email varchar(100) primary key,
-	name varchar(100),
-	password varchar(100)
+CREATE TABLE user (
+  email varchar(100) NOT NULL,
+  password varchar(100) DEFAULT NULL,
+  first_name varchar(100) DEFAULT NULL,
+  last_name varchar(100) DEFAULT NULL,
+  PRIMARY KEY (email)
 );
 
 create table booking(
@@ -34,3 +36,5 @@ create table pricing(
 	price_per_table decimal(10,2),
 	foreign key (restaurant_id) references restaurant(restaurant_id)
 );
+
+
