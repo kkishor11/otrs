@@ -20,15 +20,18 @@ public class User implements Serializable{
 	
 	@Id
 	private String email;
-	private String name;
+	private String firstName;
+	private String lastName;
 	private String password;
 	
 	public User() {
 	}
 
-	public User(String email, String name, String password) {
+	public User(String email, String firstName, String lastName, String password) {
+		super();
 		this.email = email;
-		this.name = name;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.password = password;
 	}
 
@@ -40,12 +43,20 @@ public class User implements Serializable{
 		this.email = email;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getPassword() {
@@ -59,10 +70,12 @@ public class User implements Serializable{
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Users [email=");
+		builder.append("User [email=");
 		builder.append(email);
-		builder.append(", name=");
-		builder.append(name);
+		builder.append(", firstName=");
+		builder.append(firstName);
+		builder.append(", lastName=");
+		builder.append(lastName);
 		builder.append(", password=");
 		builder.append(password);
 		builder.append("]");
