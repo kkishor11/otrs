@@ -8,7 +8,10 @@
  * Controller of the otrsRestaurantWebApp
  */
 angular.module('otrsRestaurantWebApp')
-  .controller('MainCtrl', function ($scope) {
+  .controller('MainCtrl', function ($scope, $http) {
+
+    $scope.user = {};
+
     $scope.selectedPage = "signIn";
     $scope.signInPage = true;
     $scope.signUpPage = false;
@@ -30,4 +33,19 @@ angular.module('otrsRestaurantWebApp')
         $scope.guestPage = true;
       }
     }
+
+    $scope.register = function () {
+      console.log($scope.user);
+      $http.post("http://localhost:8083/api/users/register", $scope.user)
+        .then(function (response) {
+          if (response === null || response === '')
+            return [];
+          else {
+            return response;
+          }
+        }, function (response, error) {
+          return response;
+        });
+    };
+
   });

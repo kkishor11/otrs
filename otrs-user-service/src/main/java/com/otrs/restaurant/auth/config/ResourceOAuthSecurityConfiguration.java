@@ -15,7 +15,7 @@ public class ResourceOAuthSecurityConfiguration extends ResourceServerConfigurer
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 		   .antMatchers("/").permitAll()
-		   .antMatchers("/api/**").authenticated();
+		   .antMatchers("/api/users/profile/**").authenticated();
 	}
 	
 }
