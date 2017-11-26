@@ -1,5 +1,5 @@
 {
-  "name": "otrsweb",
+  "name": "otrsrestaurantweb",
   "private": true,
   "devDependencies": {
     "autoprefixer-core": "^5.2.1",
@@ -38,6 +38,6 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "karma start test/karma.conf.js"
+    "test": "karma start test\\karma.conf.js"
   }
 }

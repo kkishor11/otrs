@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
+</head>
+
+<body ng-app="otrsRestaurantWebApp">
+  <!--[if lte IE 8]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+  <!-- Add your site or application content here -->
+
+  <md-content flex ng-controller="MainCtrl as mainCtrl">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2 flex md-truncate>Online Table Reservation System</h2>{{mainCtrl.defaultPage}}
+      </div>
+    </md-toolbar>
+    <md-content class="md-padding">
+      <md-card flex="35" style="margin-left:33%">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-title">Welcome to Table Reservation System</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content layout="column">
+          <md-nav-bar md-selected-nav-item="selectedPage">
+            <md-nav-item md-nav-click="goto('guest')" name="guest">
+              Continue As Guest
+            </md-nav-item>
+            <md-nav-item md-nav-click="goto('signIn')" name="signIn">
+              Sign In
+            </md-nav-item>
+            <md-nav-item md-nav-click="goto('signUp')" name="signUp">
+              Sign Up
+            </md-nav-item>
+          </md-nav-bar>
+
+          <div layout="column" style="margin-top:20px">
+            <md-input-container>
+              <label>Email</label>
+              <input ng-model="user.email" type="email">
+            </md-input-container>
+            <md-input-container ng-show="signUpPage || guestPage">
+              <label>First Name</label>
+              <input ng-model="user.firstName" type="text">
+            </md-input-container>
+            <md-input-container ng-show="signUpPage || guestPage">
+              <label>Last Name</label>
+              <input ng-model="user.lastName" type="text">
+            </md-input-container>
+            <md-input-container ng-show="signInPage || signUpPage">
+              <label>Password</label>
+              <input ng-model="user.password" type="password">
+            </md-input-container>
+            <md-input-container ng-show="signUpPage">
+              <label>Confirm Password</label>
+              <input ng-model="user.cpassword" type="password">
+            </md-input-container>
+        </md-card-content>
+        </div>
+        <md-card-actions layout="row" layout-align="center center">
+          <md-button ng-show="guestPage" class="md-raised md-primary">Continue as Guest</md-button>
+          <md-button ng-show="signInPage" class="md-raised md-primary">Sign In</md-button>
+          <md-button ng-show="signUpPage" class="md-raised md-primary">Sign Up</md-button>
+        </md-card-actions>
+      </md-card>
+    </md-content>
+  </md-content>
+
+  <div class="container">
+    <div ng-view=""></div>
+  </div>
+
+
+  <!-- build:js(.) scripts/vendor.js -->
+  <!-- bower:js -->
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.js"></script>
+  <script src="bower_components/angular-aria/angular-aria.js"></script>
+  <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+  <script src="bower_components/angular-messages/angular-messages.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="bower_components/angular-touch/angular-touch.js"></script>
+  <script src="bower_components/angular-material/angular-material.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:js({.tmp,app}) scripts/scripts.js -->
+  <script src="scripts/app.js"></script>
+  <script src="scripts/controllers/main.js"></script>
+  <script src="scripts/controllers/about.js"></script>
+  <!-- endbuild -->
+</body>
+
+</html>

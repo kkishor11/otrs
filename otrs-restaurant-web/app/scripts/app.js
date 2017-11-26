@@ -2,14 +2,15 @@
 
 /**
  * @ngdoc overview
- * @name otrsWebApp
+ * @name otrsRestaurantWebApp
  * @description
- * # otrsWebApp
+ * # otrsRestaurantWebApp
  *
  * Main module of the application.
  */
 angular
-  .module('otrsWebApp', [
+  .module('otrsRestaurantWebApp', [
+    'ngMaterial',
     'ngAnimate',
     'ngAria',
     'ngCookies',
@@ -19,7 +20,7 @@ angular
     'ngSanitize',
     'ngTouch'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $mdThemingProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -34,4 +35,6 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+
+    $mdThemingProvider.theme('default').primaryPalette('teal').accentPalette('light-blue');
   });

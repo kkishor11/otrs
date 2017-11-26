@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name otrsWebApp.controller:AboutCtrl
+ * @name otrsRestaurantWebApp.controller:AboutCtrl
  * @description
  * # AboutCtrl
- * Controller of the otrsWebApp
+ * Controller of the otrsRestaurantWebApp
  */
-angular.module('otrsWebApp')
+angular.module('otrsRestaurantWebApp')
   .controller('AboutCtrl', function () {
     this.awesomeThings = [
       'HTML5 Boilerplate',

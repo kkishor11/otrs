@@ -1,4 +1,4 @@
-// Generated on 2017-11-25 using generator-angular 0.16.0
+// Generated on 2017-11-26 using generator-angular 0.16.0
 'use strict';
 
 // # Globbing
@@ -86,8 +86,8 @@ module.exports = function (grunt) {
                 connect.static('./bower_components')
               ),
               connect().use(
-                '/static/styles',
-                connect.static('./static/styles')
+                '/app/styles',
+                connect.static('./app/styles')
               ),
               connect.static(appConfig.app)
             ];
@@ -338,7 +338,7 @@ module.exports = function (grunt) {
     ngtemplates: {
       dist: {
         options: {
-          module: 'otrsWebApp',
+          module: 'otrsRestaurantWebApp',
           htmlmin: '<%= htmlmin.dist.options %>',
           usemin: 'scripts/scripts.js'
         },
