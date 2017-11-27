@@ -1,4 +1,4 @@
-package com.otrs.restaurant.auth.config;
+package com.otrs.restaurant.filters;
 
 import java.io.IOException;
 
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 
-public class SimpleCORSFilter implements Filter {
+public class CORSFilter implements Filter {
 
 @Override
 public void init(FilterConfig fc) throws ServletException {

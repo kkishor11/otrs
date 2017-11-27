@@ -8,9 +8,14 @@
  * Controller of the otrsRestaurantWebApp
  */
 angular.module('otrsRestaurantWebApp')
-  .controller('MainCtrl', function ($scope, $http, $mdToast) {
+  .controller('MainCtrl', function ($scope, $http, $mdToast, $rootScope, $location) {
+
+    if ($rootScope.user) {
+      window.location.href = "#!/profile";
+    }
 
     $scope.user = {};
+    $scope.loggedInUser = null;
 
     $scope.selectedPage = 'signIn';
     $scope.signInPage = true;
@@ -35,7 +40,7 @@ angular.module('otrsRestaurantWebApp')
     };
 
     $scope.signin = function () {
-      $http.post('http://localhost:8083/oauth/token?grant_type=password&scope=all&username=kkishor@outlook.com&password=kundan', '', {
+      $http.post('http://localhost:8083/oauth/token?grant_type=password&scope=write&username=' + $scope.user.email + '&password=' + $scope.user.password, '', {
           headers: {
             'Authorization': 'Basic b3Rycy10cnVzdGVkLWNsaWVudDppcy10aGlzLWEtc2VjcmV0LWFueW1vcmU='
           }
@@ -44,11 +49,39 @@ angular.module('otrsRestaurantWebApp')
           if (response === null || response === '') {
             return [];
           } else {
-            console.log(response);
+            $rootScope.user = {};
+            $rootScope.user.authToken = response.data.access_token;
+            $rootScope.user.tokenType = response.data.token_type;
+            $rootScope.user.email = $scope.user.email;
+            $http.get('http://localhost:8083/api/users/profile/' + $scope.user.email, {
+              headers: {
+                'Authorization': response.data.token_type + ' ' + response.data.access_token
+              }
+            }).then(function (response) {
+              $rootScope.user.firstName = response.data[0].firstName;
+              $rootScope.user.lastName = response.data[0].lastName;
+              $scope.loggedInUser = response.data[0].firstName;
+              window.location.href = "#!/profile";
+            }, function (error, response) {
+              console.log(error);
+              console.log(response);
+            });
             return response;
           }
         }, function (response, error) {
-          return error;
+          var pinTo = 'bottom right';
+          var toast = $mdToast.simple()
+            .textContent('Wrong Email or Password. Please try again')
+            .action('Close')
+            .highlightAction(true)
+            .highlightClass('md-accent') // Accent is used by default, this just demonstrates the usage.
+            .position(pinTo);
+
+          $mdToast.show(toast).then(function (response) {
+            if (response === 'ok') {
+              $mdToast.hide();
+            }
+          });
         });
     };
 
@@ -109,9 +142,16 @@ angular.module('otrsRestaurantWebApp')
             var email = $scope.user.email;
             $scope.user = {};
             $scope.user.email = email;
-            var pinTo = 'top right';
+            $rootScope.user = {};
+            $rootScope.user.authToken = response.data.access_token;
+            $rootScope.user.tokenType = response.data.token_type;
+            $rootScope.user.email = $scope.user.email;
+            $rootScope.user.firstName = $scope.user.firstName;
+            $rootScope.user.lastName = $scope.user.lastName;
+            $scope.loggedInUser = $scope.user.firstName;
+            var pinTo = 'bottom right';
             var toast = $mdToast.simple()
-              .textContent('User registered successfully')
+              .textContent('Guest account created.')
               .action('Close')
               .highlightAction(true)
               .highlightClass('md-accent') // Accent is used by default, this just demonstrates the usage.
@@ -122,6 +162,7 @@ angular.module('otrsRestaurantWebApp')
                 $mdToast.hide();
               }
             });
+            window.location.href = "#!/profile";
             return response;
           }
         }, function (response, error) {

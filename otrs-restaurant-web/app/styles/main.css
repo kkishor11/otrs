@@ -7,3 +7,12 @@
   text-align: left;
   width: 100%;
 }
+
+.md-button._md-nav-button {
+  font-weight: bold;
+}
+
+.selected {
+  background-color: rgb(11, 102, 79);
+  color: #FFF;
+}

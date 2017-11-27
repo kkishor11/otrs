@@ -18,7 +18,8 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'mdPickers'
   ])
   .config(function ($routeProvider, $mdThemingProvider) {
     $routeProvider
@@ -27,10 +28,17 @@ angular
         controller: 'MainCtrl',
         controllerAs: 'main'
       })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
+      .when('/profile', {
+        templateUrl: 'views/profile.html',
+        controller: 'ProfileController'
+      })
+      .when('/booking', {
+        templateUrl: 'views/booking.html',
+        controller: 'BookingController'
+      })
+      .when('/billing', {
+        templateUrl: 'views/billing.html',
+        controller: 'BillingController'
       })
       .otherwise({
         redirectTo: '/'

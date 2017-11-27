@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.otrs.restaurant.model.Restaurant;
 import com.otrs.restaurant.service.RestaurantService;
@@ -22,9 +21,9 @@ import com.otrs.restaurant.service.RestaurantService;
  * @author Kundan
  *
  */
-@RestController
+@Controller
 @RequestMapping("/api/restaurant")
-public class RestaurantResource {
+public class RestaurantController {
 
 	@Autowired
 	RestaurantService restaurantService;

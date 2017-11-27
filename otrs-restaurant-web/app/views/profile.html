@@ -1,0 +1,93 @@
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h2 flex md-truncate>Online Table Reservation System</h2>
+    <h4>{{loggedInUser}}</h4>
+  </div>
+</md-toolbar>
+<md-content>
+  <md-card>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-title">Previous Bookings</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+      <div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Restaurant</th>
+              <th>No of Tables Booked</th>
+              <th>Booking Date and Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="booking in bookings" ng-click="selectBooking(booking)" ng-class="{selected: booking === selectedBooking}">
+              <td>{{booking.restaurantName}}</td>
+              <td>{{booking.noOfBookedTables}}</td>
+              <td>{{booking.bookingDate | date : 'dd-MMM-yyyy HH:mm'}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <md-button class="pull-right md-warn md-raised" ng-show="selectedBooking" ng-click="cancel()">Cancel Booking</md-button>
+      </div>
+    </md-card-content>
+  </md-card>
+
+  <md-card>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-title">Reserve a Table</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+      <md-input-container flex>
+        <label>City</label>
+        <md-select required ng-model="city" ng-change="fetchRestaurant(city)">
+          <md-option ng-repeat="city in cities" ng-value="city.name" ng-disabled="$index === 0">
+            {{city.name}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+
+      <div ng-show="restaurants">
+        <table id="table" class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Tables Available</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="restaurant in restaurants" ng-click="selectRestaurant(restaurant)" ng-class="{selected: restaurant === selectedRestaurant}">
+              <td>{{restaurant.name}}</td>
+              <td>{{restaurant.noOfTables}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <md-button class="pull-right md-primary md-raised" ng-show="selectedRestaurant" ng-click="proceed()">Proceed</md-button>
+      </div>
+
+      <div ng-show="proceedToBooking" name="bookingForm" layout="column">
+        <h4 style="color:teal">Selected Restaurant : {{selectedRestaurant.name}}</h4>
+        <span style="color:red">4 people can sit on a table. Kindly book accordingly</span>
+        <span style="color:red">Your booking will be valid for a maximum of 2 hours from the time of booking</span>
+        <div layout="row" style="margin-top:20px" flex>
+          <md-input-container md-block flex>
+            <label>Number of tables</label>
+            <input type="text" required ng-model="booking.noOfBookedTables" />
+          </md-input-container>
+          <md-input-container md-block flex>
+            <label>Select a Date</label>
+            <md-datepicker required ng-model="booking.bookingDate"></md-datepicker>
+          </md-input-container>
+          <md-input-container md-block flex>
+            <label>Select a Time</label>
+            <input type="time" required ng-model="booking.bookingTime" />
+          </md-input-container>
+        </div>
+        <md-button style="width:20%" class="md-raised md-warn" ng-click="confirmBooking()">Confirm Booking</md-button>
+      </div>
+    </md-card-content>
+  </md-card>
+</md-content>

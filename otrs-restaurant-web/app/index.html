@@ -11,6 +11,7 @@
   <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
   <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
+  <link rel="stylesheet" href="bower_components/mdPickers/dist/mdPickers.min.css" />
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:css(.tmp) styles/main.css -->
@@ -25,87 +26,7 @@
 
   <!-- Add your site or application content here -->
 
-  <md-content flex ng-controller="MainCtrl as mainCtrl">
-    <md-toolbar>
-      <div class="md-toolbar-tools">
-        <h2 flex md-truncate>Online Table Reservation System</h2>{{mainCtrl.defaultPage}}
-      </div>
-    </md-toolbar>
-    <md-content class="md-padding">
-      <md-card flex="35" style="margin-left:33%">
-        <form name "userForm">
-          <md-card-title>
-            <md-card-title-text>
-              <span class="md-title">Welcome to Table Reservation System</span>
-            </md-card-title-text>
-          </md-card-title>
-          <md-card-content layout="column">
-            <md-nav-bar md-selected-nav-item="selectedPage">
-              <md-nav-item md-nav-click="goto('guest')" name="guest">
-                Continue As Guest
-              </md-nav-item>
-              <md-nav-item md-nav-click="goto('signIn')" name="signIn">
-                Sign In
-              </md-nav-item>
-              <md-nav-item md-nav-click="goto('signUp')" name="signUp">
-                Sign Up
-              </md-nav-item>
-            </md-nav-bar>
-
-            <div layout="column" style="margin-top:20px">
-              <md-input-container>
-                <label>Email</label>
-                <input required ng-model="user.email" name="email" type="email" minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/">
-                <div ng-messages="userForm.email.$error" role="alert">
-                  <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
-                    Your email must be between 10 and 100 characters long and look like an e-mail address.
-                  </div>
-                </div>
-              </md-input-container>
-              <md-input-container ng-show="signUpPage || guestPage">
-                <label>First Name</label>
-                <input required ng-model="user.firstName" type="text" name="firstName">
-                <div ng-messages="userForm.firstName.$error" multiple md-auto-hide="false">
-                  <div ng-message="required">
-                    Please enter your First Name
-                  </div>
-                </div>
-              </md-input-container>
-              <md-input-container ng-show="signUpPage || guestPage">
-                <label>Last Name</label>
-                <input ng-model="user.lastName" type="text">
-              </md-input-container>
-              <md-input-container ng-show="signInPage || signUpPage">
-                <label>Password</label>
-                <input required ng-model="user.password" type="password" name="password">
-                <div ng-messages="userForm.password.$error" multiple md-auto-hide="false">
-                  <div ng-message="required">
-                    Please enter a password
-                  </div>
-                </div>
-              </md-input-container>
-              <md-input-container ng-show="signUpPage">
-                <label>Confirm Password</label>
-                <input required ng-model="user.cpassword" type="password" name="cpassword">
-                <div ng-messages="userForm.cpassword.$error" multiple md-auto-hide="false">
-                  <div ng-message="required">
-                    Please confirm your password
-                  </div>
-                </div>
-              </md-input-container>
-          </md-card-content>
-          </div>
-          <md-card-actions layout="row" layout-align="center center">
-            <md-button ng-show="guestPage" class="md-raised md-primary" type="submit" ng-click="continueGuest()">Continue as Guest</md-button>
-            <md-button ng-show="signInPage" class="md-raised md-primary" type="submit" ng-click="signin()">Sign In</md-button>
-            <md-button ng-show="signUpPage" class="md-raised md-primary" type="submit" ng-click="register()">Sign Up</md-button>
-          </md-card-actions>
-        </form>
-      </md-card>
-    </md-content>
-  </md-content>
-
-  <div class="container">
+  <div>
     <div ng-view=""></div>
   </div>
 
@@ -124,13 +45,17 @@
   <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
   <script src="bower_components/angular-touch/angular-touch.js"></script>
   <script src="bower_components/angular-material/angular-material.js"></script>
+  <script src="bower_components/moment/moment.js"></script>
+  <script src="bower_components/mdPickers/dist/mdPickers.min.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
   <!-- build:js({.tmp,app}) scripts/scripts.js -->
   <script src="scripts/app.js"></script>
   <script src="scripts/controllers/main.js"></script>
-  <script src="scripts/controllers/about.js"></script>
+  <script src="scripts/controllers/profile.js"></script>
+  <script src="scripts/controllers/booking.js"></script>
+  <script src="scripts/controllers/billing.js"></script>
   <!-- endbuild -->
 </body>
 
