@@ -10,7 +10,8 @@ package com.otrs.restaurant.utils;
 public enum SaveStatus {
 	SUCCESS("Saved Successfully"),
 	FAILED("Data could not be saved"),
-	DUPLICATE("Duplicates are not allowed");
+	DUPLICATE("Duplicates are not allowed"),
+	LIMIT_EXCEEDED("LIMIT_EXCEEDED");
 	
 	private String statusText;
 	

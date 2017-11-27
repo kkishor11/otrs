@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.otrs.restaurant.model.Booking;
 import com.otrs.restaurant.model.ServiceResponse;
 import com.otrs.restaurant.service.BookingService;
+import com.otrs.restaurant.utils.SaveStatus;
 
 /**
  * @author Kundan
@@ -34,11 +35,14 @@ public class BookingController {
 	@PostMapping(path="/")
 	public @ResponseBody ServiceResponse addNewBooking (@Valid @RequestBody Booking booking) {
 		String response = bookingService.saveBooking(booking);
+		if(response.equals(SaveStatus.LIMIT_EXCEEDED.statusText())) {
+			return new ServiceResponse(response, HttpStatus.UNPROCESSABLE_ENTITY.name());
+		}
 		return new ServiceResponse(response, HttpStatus.CREATED.name());
 	}
 	
 	@GetMapping(path="/{email:.+}")
-	public @ResponseBody Iterable<Booking> getRestaurantByCity(@PathVariable String email) {
+	public @ResponseBody Iterable<Booking> getBookingsForUser(@PathVariable String email) {
 		return bookingService.getBookingsForUser(email);
 	}
 	

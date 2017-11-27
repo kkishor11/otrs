@@ -131,32 +131,44 @@ angular.module('otrsRestaurantWebApp')
 
           $http.post(UIConstants.BOOKING_SERVICE_HOST + '/api/bookings/', $scope.booking)
             .then((response) => {
-              $mdDialog.show(
-                $mdDialog.alert()
-                .parent(angular.element(document.querySelector('#popupContainer')))
-                .clickOutsideToClose(true)
-                .title('Booking Confirmed at ' + $scope.selectedRestaurant.name)
-                .textContent('Total payable is ' + $scope.booking.price)
-                .ariaLabel('Booking Confirmed')
-                .ok('Got it!')
-              );
-              $scope.restaurants = null;
-              $scope.proceedToBooking = false;
-              $scope.booking = {};
-              getBookingsForUser($rootScope.user.email);
-              var pinTo = 'bottom right';
-              var toast = $mdToast.simple()
-                .textContent('Booking Saved Successfully')
-                .action('Close')
-                .highlightAction(true)
-                .highlightClass('md-accent') // Accent is used by default, this just demonstrates the usage.
-                .position(pinTo);
+              if (response.status === 422) {
+                $mdDialog.show(
+                  $mdDialog.alert()
+                  .parent(angular.element(document.querySelector('#popupContainer')))
+                  .clickOutsideToClose(true)
+                  .title('Restaurant has rejected your booking.')
+                  .textContent('Kindly select different time')
+                  .ariaLabel('Booking Rejected')
+                  .ok('Got it!')
+                );
+              } else {
+                $mdDialog.show(
+                  $mdDialog.alert()
+                  .parent(angular.element(document.querySelector('#popupContainer')))
+                  .clickOutsideToClose(true)
+                  .title('Booking Confirmed at ' + $scope.selectedRestaurant.name)
+                  .textContent('Total payable is ' + $scope.booking.price)
+                  .ariaLabel('Booking Confirmed')
+                  .ok('Got it!')
+                );
+                $scope.restaurants = null;
+                $scope.proceedToBooking = false;
+                $scope.booking = {};
+                getBookingsForUser($rootScope.user.email);
+                var pinTo = 'bottom right';
+                var toast = $mdToast.simple()
+                  .textContent('Booking Saved Successfully')
+                  .action('Close')
+                  .highlightAction(true)
+                  .highlightClass('md-accent') // Accent is used by default, this just demonstrates the usage.
+                  .position(pinTo);
 
-              $mdToast.show(toast).then(function (response) {
-                if (response === 'ok') {
-                  $mdToast.hide();
-                }
-              });
+                $mdToast.show(toast).then(function (response) {
+                  if (response === 'ok') {
+                    $mdToast.hide();
+                  }
+                });
+              }
             }, (error) => {
               var pinTo = 'bottom right';
               var toast = $mdToast.simple()
