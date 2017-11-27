@@ -18,8 +18,7 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch',
-    'mdPickers'
+    'ngTouch'
   ])
   .config(function ($routeProvider, $mdThemingProvider) {
     $routeProvider

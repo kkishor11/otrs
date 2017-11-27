@@ -41,7 +41,7 @@ angular.module('otrsRestaurantWebApp')
     if (!$rootScope.user) {
       window.location.href = '#!/';
     } else {
-      $scope.loggedInUser = $rootScope.user.firstName;
+      $scope.loggedInUser = $rootScope.user.firstName + ' ' + $rootScope.user.lastName;
       getBookingsForUser($rootScope.user.email);
     }
 

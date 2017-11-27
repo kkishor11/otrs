@@ -20,11 +20,6 @@ CREATE TABLE user (
   last_name varchar(100) DEFAULT NULL
 );
 
-
-select * from otrs.user;
-select * from otrs.restaurant;
-select * from otrs.booking where booking_date BETWEEN '2017-11-20 21:00:00' and '2017-11-20 23:00:00';
-
 create table booking(
 	booking_id integer AUTO_INCREMENT primary key,
 	restaurant_id integer,
@@ -75,4 +70,9 @@ INSERT INTO otrs.pricing (restaurant_id, price_per_table) VALUES(12, 1499);
 INSERT INTO otrs.pricing (restaurant_id, price_per_table) VALUES(13, 999);
 INSERT INTO otrs.pricing (restaurant_id, price_per_table) VALUES(14, 765);
 INSERT INTO otrs.pricing (restaurant_id, price_per_table) VALUES(15, 555);
+
+select * from otrs.user;
+select * from otrs.restaurant;
+select * from otrs.booking where booking_date BETWEEN '2017-11-20 21:00:00' and '2017-11-20 23:00:00';
+
 
