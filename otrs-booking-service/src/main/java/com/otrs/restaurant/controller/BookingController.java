@@ -45,7 +45,7 @@ public class BookingController {
 	@DeleteMapping(path="/{bookingId}")
 	public @ResponseBody ServiceResponse clearBooking(@PathVariable Integer bookingId) {
 		String response = bookingService.clearBooking(bookingId);
-		return new ServiceResponse(response, HttpStatus.CREATED.name());
+		return new ServiceResponse(response, HttpStatus.ACCEPTED.name());
 	}
 	
 }

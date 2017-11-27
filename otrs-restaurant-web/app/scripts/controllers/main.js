@@ -8,7 +8,7 @@
  * Controller of the otrsRestaurantWebApp
  */
 angular.module('otrsRestaurantWebApp')
-  .controller('MainCtrl', function ($scope, $http, $mdToast, $rootScope, $location) {
+  .controller('MainCtrl', function ($scope, $http, $mdToast, $rootScope, $location, UIConstants) {
 
     if ($rootScope.user) {
       window.location.href = "#!/profile";
@@ -40,7 +40,7 @@ angular.module('otrsRestaurantWebApp')
     };
 
     $scope.signin = function () {
-      $http.post('http://localhost:8083/oauth/token?grant_type=password&scope=write&username=' + $scope.user.email + '&password=' + $scope.user.password, '', {
+      $http.post(UIConstants.USERS_SERVICE_HOST + '/oauth/token?grant_type=password&scope=write&username=' + $scope.user.email + '&password=' + $scope.user.password, '', {
           headers: {
             'Authorization': 'Basic b3Rycy10cnVzdGVkLWNsaWVudDppcy10aGlzLWEtc2VjcmV0LWFueW1vcmU='
           }
@@ -53,7 +53,7 @@ angular.module('otrsRestaurantWebApp')
             $rootScope.user.authToken = response.data.access_token;
             $rootScope.user.tokenType = response.data.token_type;
             $rootScope.user.email = $scope.user.email;
-            $http.get('http://localhost:8083/api/users/profile/' + $scope.user.email, {
+            $http.get(UIConstants.USERS_SERVICE_HOST + '/api/users/profile/' + $scope.user.email, {
               headers: {
                 'Authorization': response.data.token_type + ' ' + response.data.access_token
               }
@@ -95,7 +95,7 @@ angular.module('otrsRestaurantWebApp')
     */
 
     $scope.register = function () {
-      $http.post('http://localhost:8083/api/users/register', $scope.user)
+      $http.post(UIConstants.USERS_SERVICE_HOST + '/api/users/register', $scope.user)
         .then(function (response) {
           if (response === null || response === '') {
             return [];
@@ -129,7 +129,7 @@ angular.module('otrsRestaurantWebApp')
     };
 
     $scope.continueGuest = function () {
-      $http.post('http://localhost:8083/api/users/register', $scope.user)
+      $http.post(UIConstants.USERS_SERVICE_HOST + '/api/users/register', $scope.user)
         .then(function (response) {
           if (response === null || response === '') {
             return [];

@@ -12,13 +12,14 @@
       </md-card-title-text>
     </md-card-title>
     <md-card-content>
-      <div>
+      <div ng-show="bookings">
         <table class="table">
           <thead>
             <tr>
               <th>Restaurant</th>
               <th>No of Tables Booked</th>
               <th>Booking Date and Time</th>
+              <th>Booking Price</th>
             </tr>
           </thead>
           <tbody>
@@ -26,10 +27,15 @@
               <td>{{booking.restaurantName}}</td>
               <td>{{booking.noOfBookedTables}}</td>
               <td>{{booking.bookingDate | date : 'dd-MMM-yyyy HH:mm'}}</td>
+              <td>{{booking.price}}</td>
             </tr>
           </tbody>
         </table>
-        <md-button class="pull-right md-warn md-raised" ng-show="selectedBooking" ng-click="cancel()">Cancel Booking</md-button>
+        <span style="color:teal;font-weight:bold;" ng-hide="selectedBooking">Click on any of the booking to cancel</span>
+        <md-button class="pull-right md-warn md-raised" ng-show="selectedBooking" ng-click="cancelBooking()">Cancel Booking</md-button>
+      </div>
+      <div ng-hide="bookings">
+        <span style="color:red;font-weight:bold;">No Booking History</span>
       </div>
     </md-card-content>
   </md-card>
@@ -65,6 +71,7 @@
             </tr>
           </tbody>
         </table>
+        <span style="color:teal;font-weight:bold;" ng-hide="selectedRestaurant">Click on any of the restaurants to book</span>
         <md-button class="pull-right md-primary md-raised" ng-show="selectedRestaurant" ng-click="proceed()">Proceed</md-button>
       </div>
 

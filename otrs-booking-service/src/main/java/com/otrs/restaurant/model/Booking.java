@@ -31,18 +31,20 @@ public class Booking implements Serializable {
 	private Integer noOfBookedTables;
 	private String userId;
 	private Date bookingDate;
+	private Double price;
 
 	public Booking() {
 	}
 
 	public Booking(Integer bookingId, Integer restaurantId, String restaurantName, Integer noOfBookedTables,
-			String userId, Date bookingDate) {
+			String userId, Date bookingDate, Double price) {
 		this.bookingId = bookingId;
 		this.restaurantId = restaurantId;
 		this.restaurantName = restaurantName;
 		this.noOfBookedTables = noOfBookedTables;
 		this.userId = userId;
 		this.bookingDate = bookingDate;
+		this.price = price;
 	}
 
 	public Integer getBookingId() {
@@ -93,6 +95,14 @@ public class Booking implements Serializable {
 		this.bookingDate = bookingDate;
 	}
 
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -108,6 +118,8 @@ public class Booking implements Serializable {
 		builder.append(userId);
 		builder.append(", bookingDate=");
 		builder.append(bookingDate);
+		builder.append(", price=");
+		builder.append(price);
 		builder.append("]");
 		return builder.toString();
 	}
