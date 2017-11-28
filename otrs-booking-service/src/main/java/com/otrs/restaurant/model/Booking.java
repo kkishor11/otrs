@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 /**
  * @author Kundan
@@ -27,6 +28,8 @@ public class Booking implements Serializable {
 	private Integer restaurantId;
 	private String restaurantName;
 	private Integer noOfBookedTables;
+	@Transient
+	private Integer totalTables;
 	private String userId;
 	private Date bookingDate;
 	private Double price;
@@ -35,11 +38,12 @@ public class Booking implements Serializable {
 	}
 
 	public Booking(Integer bookingId, Integer restaurantId, String restaurantName, Integer noOfBookedTables,
-			String userId, Date bookingDate, Double price) {
+			Integer totalTables, String userId, Date bookingDate, Double price) {
 		this.bookingId = bookingId;
 		this.restaurantId = restaurantId;
 		this.restaurantName = restaurantName;
 		this.noOfBookedTables = noOfBookedTables;
+		this.totalTables = totalTables;
 		this.userId = userId;
 		this.bookingDate = bookingDate;
 		this.price = price;
@@ -77,6 +81,14 @@ public class Booking implements Serializable {
 		this.noOfBookedTables = noOfBookedTables;
 	}
 
+	public Integer getTotalTables() {
+		return totalTables;
+	}
+
+	public void setTotalTables(Integer totalTables) {
+		this.totalTables = totalTables;
+	}
+
 	public String getUserId() {
 		return userId;
 	}
@@ -112,6 +124,8 @@ public class Booking implements Serializable {
 		builder.append(restaurantName);
 		builder.append(", noOfBookedTables=");
 		builder.append(noOfBookedTables);
+		builder.append(", totalTables=");
+		builder.append(totalTables);
 		builder.append(", userId=");
 		builder.append(userId);
 		builder.append(", bookingDate=");

@@ -140,15 +140,11 @@ angular.module('otrsRestaurantWebApp')
             $scope.guestPage = false;
 
             var email = $scope.user.email;
-            $scope.user = {};
-            $scope.user.email = email;
             $rootScope.user = {};
-            $rootScope.user.authToken = response.data.access_token;
-            $rootScope.user.tokenType = response.data.token_type;
             $rootScope.user.email = $scope.user.email;
             $rootScope.user.firstName = $scope.user.firstName;
             $rootScope.user.lastName = $scope.user.lastName;
-            $scope.loggedInUser = $scope.user.firstName;
+            $scope.loggedInUser = $scope.user.firstName + $scope.user.lastName;
             var pinTo = 'bottom right';
             var toast = $mdToast.simple()
               .textContent('Guest account created.')
