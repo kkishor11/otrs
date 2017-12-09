@@ -3,8 +3,13 @@
  */
 package com.otrs.restaurant.service.impl;
 
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -17,6 +22,7 @@ import javax.mail.internet.MimeMessage;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -47,8 +53,13 @@ public class BookingServiceImpl implements BookingService {
 	@Override
 	public String saveBooking(Booking booking) {
 		try {
-			bookingRepository.save(booking);
-			sendBookingEmail(booking.getUserId(), booking.getPrice(), booking.getRestaurantName(), booking.getNoOfBookedTables());
+			if (tablesAvailable(booking)) {
+				bookingRepository.save(booking);
+				sendBookingEmail(booking.getUserId(), booking.getPrice(), booking.getRestaurantName(),
+						booking.getNoOfBookedTables());
+			} else {
+				return SaveStatus.LIMIT_EXCEEDED.statusText();
+			}
 		} catch (Exception e) {
 			if (e instanceof DataIntegrityViolationException) {
 				logger.error(e.getMessage());
@@ -57,6 +68,54 @@ public class BookingServiceImpl implements BookingService {
 			return SaveStatus.FAILED.statusText();
 		}
 		return SaveStatus.SUCCESS.statusText();
+	}
+
+	private boolean tablesAvailable(Booking booking) {
+		List<Booking> bookings = bookingRepository.findBookingByRestaurant(booking.getRestaurantId());
+		//Filtering booking for the said date only.
+		bookings = bookings.stream().filter(e -> {
+			Calendar bookingDate = Calendar.getInstance();
+			bookingDate.setTime(e.getBookingDate());
+			bookingDate.set(Calendar.HOUR_OF_DAY, 0);
+			bookingDate.set(Calendar.MINUTE, 0);
+			bookingDate.set(Calendar.SECOND, 0);
+			bookingDate.set(Calendar.MILLISECOND, 0);
+			
+			Calendar dbBookingDate = Calendar.getInstance();
+			dbBookingDate.setTime(booking.getBookingDate());
+			dbBookingDate.set(Calendar.HOUR_OF_DAY, 0);
+			dbBookingDate.set(Calendar.MINUTE, 0);
+			dbBookingDate.set(Calendar.SECOND, 0);
+			dbBookingDate.set(Calendar.MILLISECOND, 0);
+			
+			return bookingDate.compareTo(dbBookingDate) == 0;
+		}).collect(Collectors.toList());
+		
+		//If the number of booking is less than the number of tables available. Booking will be permitted
+		if(booking.getTotalTables() > bookings.size()) {
+			return true;
+		} else {
+			//Otherwise check the bookings for the exact timing
+			return bookings.stream().anyMatch((e -> {
+				
+				Calendar dbBookingDatePlusTwo = Calendar.getInstance();
+				dbBookingDatePlusTwo.setTime(e.getBookingDate());
+				dbBookingDatePlusTwo.set(Calendar.HOUR_OF_DAY, dbBookingDatePlusTwo.get(Calendar.HOUR_OF_DAY));
+				
+				Calendar bookingDatePlusTwo = Calendar.getInstance();
+				bookingDatePlusTwo.setTime(booking.getBookingDate());
+				bookingDatePlusTwo.set(Calendar.HOUR_OF_DAY, bookingDatePlusTwo.get(Calendar.HOUR_OF_DAY));
+				
+				if (booking.getBookingDate().after(e.getBookingDate())
+						&& booking.getBookingDate().before(dbBookingDatePlusTwo.getTime())
+						&& bookingDatePlusTwo.getTime().after(e.getBookingDate())
+						&& bookingDatePlusTwo.getTime().before(dbBookingDatePlusTwo.getTime())) {
+					return false;
+				}
+				
+				return true;
+			}));
+		}
 	}
 
 	/*
@@ -89,9 +148,10 @@ public class BookingServiceImpl implements BookingService {
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.port", "465");
 
+		//Kindly put any other Gmail id and the password. I have removed mine for security purposes.
 		Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("kundanmca123@gmail.com", "pepfpeeyovdwersh");
+				return new PasswordAuthentication("kundanmca123@gmail.com", "<PASSWORD>");
 			}
 		});
 
@@ -101,19 +161,31 @@ public class BookingServiceImpl implements BookingService {
 			message.setFrom(new InternetAddress("kundanmca123@gmail.com"));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailId));
 			message.setSubject("Your booking Details");
-			message.setText("Dear User," 
-					+ "\nThis is a confirmation email for your booking." 
-					+ "\nRestaurant Name : " + restaurantName
-					+ "\nTables Booked : " + tables
-					+ "\nAmount Payable : " + amount
-					+ "\n\nThank you for booking with OTRS."
-					+ "\nRegards,\nOTRS");
+			message.setText("Dear User," + "\nThis is a confirmation email for your booking." + "\nRestaurant Name : "
+					+ restaurantName + "\nTables Booked : " + tables + "\nAmount Payable : " + amount
+					+ "\n\nThank you for booking with OTRS." + "\nRegards,\nOTRS");
 
 			Transport.send(message);
 
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	@Scheduled(cron = "${booking.clean.scheduler}")
+	public void clearPreviousBookings() {
+		logger.info("Started booking scheduler");
+		Calendar now = Calendar.getInstance();
+		now.set(Calendar.HOUR_OF_DAY, now.get(Calendar.HOUR_OF_DAY) - 2);
+		List<Booking> bookings = bookingRepository.findAll();
+		logger.info("Found total " + bookings.size() + " bookings");
+		List<Booking> bookingsToClear = Optional.ofNullable(bookings).orElseGet(Collections::emptyList).stream()
+				.filter(e -> e.getBookingDate().compareTo(now.getTime()) <= 0).collect(Collectors.toList());
+		if (!CollectionUtils.isEmpty(bookingsToClear)) {
+			logger.info("Clearing total " + bookingsToClear.size() + " bookings");
+			bookingRepository.delete(bookingsToClear);
+		}
+		logger.info("Job Done");
 	}
 
 }

@@ -10,11 +10,11 @@
 angular.module('otrsRestaurantWebApp')
   .controller('ProfileController', function ($scope, $http, $mdToast, $rootScope, $filter, $mdDialog, UIConstants) {
 
-    $rootScope.user = {
-      "email": "kkishor@outlook.com",
-      "firstName": "Kundan",
-      "lastName": "Kishor"
-    };
+    // $rootScope.user = {
+    //   "email": "kkishor@outlook.com",
+    //   "firstName": "Kundan",
+    //   "lastName": "Kishor"
+    // };
 
     $scope.cities = ('Select Bangalore Delhi Kolkata Mumbai Muzaffarpur').split(' ').map(function (city) {
       return {
@@ -124,6 +124,7 @@ angular.module('otrsRestaurantWebApp')
       $scope.booking.bookingDate.setHours(hours);
       $scope.booking.bookingDate.setMinutes(minutes);
       $scope.booking.bookingDate.setSeconds(0);
+      $scope.booking.totalTables = $scope.selectedRestaurant.noOfTables;
 
       $http.get(UIConstants.PRICING_SERVICE_HOST + '/api/pricing/' + $scope.selectedRestaurant.restaurantId)
         .then((response) => {
