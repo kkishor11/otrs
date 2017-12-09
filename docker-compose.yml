@@ -1,0 +1,43 @@
+version: '2.2'
+services:
+  restaurant-service:
+    build: ./otrs-restaurant-service
+    container_name: otrs-restaurant-service
+    ports:
+     - "8080:8080"
+    links:
+      - db:db
+    depends_on:
+     - db
+  user-service:
+    build: ./otrs-user-service
+    container_name: otrs-user-service
+    ports:
+     - "8083:8083"
+    links:
+      - db:db
+    depends_on:
+     - db
+  billing-service:
+    build: ./otrs-billing-service
+    container_name: otrs-billing-service
+    ports:
+     - "8081:8081"
+    links:
+      - db:db
+    depends_on:
+     - db
+  booking-service:
+    build: ./otrs-booking-service
+    container_name: otrs-booking-service
+    ports:
+     - "8082:8082"
+    links:
+      - db:db
+    depends_on:
+     - db
+  db:
+    build: ./database
+    container_name: db
+    ports:
+      - "3306:3306"
