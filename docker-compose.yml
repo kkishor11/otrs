@@ -1,5 +1,10 @@
 version: '2.2'
 services:
+  otrs-web:
+    build: ./otrs-restaurant-web
+    container_name: otrs-restaurant-web
+    ports:
+     - "9000:9000"
   restaurant-service:
     build: ./otrs-restaurant-service
     container_name: otrs-restaurant-service
